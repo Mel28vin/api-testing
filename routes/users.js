@@ -29,9 +29,10 @@ router.post("/create", (req, res) => {
 
 router.patch("/update", (req, res) => {
   const { name, status, priority } = req.body
-  let update = ""
-  if (status) update += `status="${status}"`
-  if (priority) update += `, priority="${priority}"`
+  let update
+  if (status && priority) update = `status="${status}", priority="${priority}"`
+  else if (status) update = `status="${status}"`
+  else if (priority) update = `priority="${priority}"`
   db.query(
     `UPDATE staff SET ${update} WHERE name="${name}"`,
     (err, data, _fields) => {
